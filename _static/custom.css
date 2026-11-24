@@ -1,0 +1,276 @@
+/* 사이트 보조 스타일 (색은 테마 변수를 그대로 쓴다)
+   전체 인상은 DexBench (dexbench.ai) 를 따른다: Pretendard, 밝은 회색 바탕 위 흰 카드, 짧은 구역 라벨과 한 문장 제목, 숫자 요약 줄. */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+html {
+  --pst-font-family-base: "Pretendard Variable", Pretendard, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --pst-font-family-heading: var(--pst-font-family-base);
+}
+html[data-theme="light"] { --pst-color-background: #fafafa; }
+.bd-content h1, .bd-content h2, .bd-content h3 { letter-spacing: -0.01em; }
+
+/* 한글 줄바꿈: 단어 중간에서 끊지 않는다 */
+.bd-content { word-break: keep-all; }
+
+/* 카드: 움직임 없이 테두리만 살짝 진하게 */
+.sd-card { transition: border-color 0.15s ease; }
+.sd-card:hover { border-color: var(--pst-color-text-muted); }
+
+/* 다이어그램: 본문 폭에 맞추고 사이트가 흰 판·테두리를 그린다 (그림 파일에는 바깥 테두리·배경을 넣지 않는다,
+   figure-kit/README.md).  다크 모드에서도 흰 판 그대로 둔다. 그림 색은 밝은 배경 기준이다.  판은 img 에 붙여 캡션은 판 밖에 둔다. */
+.bd-content img.diagram { box-sizing: border-box; width: 100%; height: auto; padding: 0.5rem;
+  background: #fff; border: 1px solid #d0d7de; border-radius: 0.75rem; }
+html[data-theme="dark"] .bd-content img.diagram { filter: none; border-color: #444c56; }
+
+/* 영상 (inline_media 의 {video}) */
+.doc-video-box { margin: 1rem 0 1.5rem; }
+.doc-video-box video { display: block; width: 100%; height: auto; border-radius: 0.5rem; background: #000; }
+.doc-video-caption { font-size: 0.9rem; color: var(--pst-color-text-muted); margin-top: 0.45rem; }
+.doc-video-caption p { margin: 0; }
+/* 영상 자리 ({video} :slot:, 파일이 아직 없을 때) */
+.doc-video-slot { aspect-ratio: 16 / 9; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.35rem; border: 2px dashed var(--pst-color-border); border-radius: 0.5rem; color: var(--pst-color-text-muted); }
+.doc-video-slot span { font-size: 1rem; font-weight: 600; }
+.doc-video-slot code { font-size: 0.8rem; background: none; border: 0; color: var(--pst-color-text-muted); }
+/* 그림 자리 ({diagram}, 그림 파일이 아직 없을 때) */
+.doc-figure-slot { aspect-ratio: 5 / 2; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.35rem; padding: 1rem 2rem; margin: 1rem 0 1.5rem; text-align: center;
+  border: 2px dashed var(--pst-color-border); border-radius: 0.75rem; color: var(--pst-color-text-muted); }
+.doc-figure-slot span { font-size: 1rem; font-weight: 600; }
+.doc-figure-slot code { font-size: 0.8rem; background: none; border: 0; color: var(--pst-color-text-muted); }
+.doc-figure-slot small { font-size: 0.82rem; max-width: 40rem; }
+
+/* 표: 첫 열을 굵게 쓰는 "항목 | 내용" 표 */
+table.kv td:first-child { font-weight: 600; white-space: nowrap; }
+
+/* 좁은 화면: 다이어그램을 읽을 수 있는 크기로 두고 가로 스크롤 (class 는 img 에 붙는다) */
+@media (max-width: 720px) {
+  .bd-content figure:has(> img.diagram) { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .bd-content img.diagram { width: 820px; max-width: none; }
+}
+
+/* 파일 구조 트리 ({filetree}, _ext/filetree.py): 단계 번호 색은 홈 그림(pipeline)의 번호 색과 같다 */
+.ftree-box {
+  --ft-line: #c4cbd3; --ft-plain: #57606a;
+  --ft-s1: #8045e5; --ft-s2: #0a7d91; --ft-s3: #2da44e; --ft-s4: #bf8700; --ft-sloop: #57606a;
+  border: 1px solid var(--pst-color-border); border-radius: 0.6rem; padding: 0.7rem 1rem 1rem; margin: 1rem 0 1.5rem;
+}
+html[data-theme="dark"] .ftree-box {
+  --ft-line: #444c56; --ft-plain: #8b949e;
+  --ft-s1: #b392f0; --ft-s2: #3fb1c5; --ft-s3: #56d364; --ft-s4: #e3b341; --ft-sloop: #8b949e;
+}
+.ft-bar { display: flex; justify-content: flex-end; gap: 0.4rem; margin-bottom: 0.3rem; }
+.ft-bar button { font: inherit; font-size: 0.8rem; color: var(--pst-color-text-muted); background: none; cursor: pointer;
+  border: 1px solid var(--pst-color-border); border-radius: 0.3rem; padding: 0.05rem 0.55rem; }
+.ft-bar button:hover { color: var(--pst-color-text-base); border-color: var(--pst-color-text-muted); }
+.ftree-scroll { overflow-x: auto; }
+.ftree, .ftree ul { list-style: none; margin: 0; padding: 0; }
+.ftree ul { margin-left: 0.5rem; }
+.ftree li { position: relative; margin: 0; padding-left: 1.25rem; }
+.ftree > li { padding-left: 0; }
+/* ├ └ 선: ::before = 가로 꺾임, ::after = 다음 형제까지 세로선 */
+.ftree ul > li::before { content: ""; position: absolute; left: 0; top: 0; width: 0.95rem; height: 0.9rem;
+  border-left: 1px solid var(--ft-line); border-bottom: 1px solid var(--ft-line); }
+.ftree ul > li::after { content: ""; position: absolute; left: 0; top: 0.9rem; bottom: 0; border-left: 1px solid var(--ft-line); }
+.ftree ul > li:last-child::after { display: none; }
+/* 접고 펴기: 하위 항목이 있는 폴더는 <details>, 줄을 누르면 열리고 닫힌다 */
+.ftree summary { display: block; list-style: none; cursor: pointer; }
+.ftree summary::-webkit-details-marker { display: none; }
+.ftree summary:hover code.ft-name { color: var(--pst-color-link-hover); }
+.ftree summary:focus-visible { outline: 2px solid var(--pst-color-accent); outline-offset: 1px; border-radius: 0.25rem; }
+.ft-twist { flex: none; align-self: center; width: 0.8rem; display: inline-flex; justify-content: center; color: var(--ft-plain); }
+.ft-caret { transition: transform 0.12s ease; }
+.ftree details[open] > summary .ft-caret { transform: rotate(90deg); }
+.ftree .ft-ico-open, .ftree details[open] > summary .ft-ico-closed { display: none; }
+.ftree details[open] > summary .ft-ico-open { display: inline-block; }
+/* 한 줄: [접기 표시] 아이콘 이름 ★ 설명 */
+.ft-row { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 0.4rem; line-height: 1.75rem; }
+.ft-ico { align-self: center; flex: none; color: var(--ft-plain); }
+/* 데이터 생성 파이프라인 단계 번호 (그 줄에만) */
+.ft-stage { font-weight: 700; font-size: 0.95rem; line-height: 1; cursor: default; }
+.ft-s-1 { color: var(--ft-s1); } .ft-s-2 { color: var(--ft-s2); } .ft-s-3 { color: var(--ft-s3); }
+.ft-s-4 { color: var(--ft-s4); } .ft-s-loop { color: var(--ft-sloop); }
+.ft-row.ft-file .ft-ico { opacity: 0.75; }
+.ftree code.ft-name { background: none; border: 0; padding: 0; font-size: 0.88rem;
+  font-weight: 400; color: var(--pst-color-text-base); overflow-wrap: anywhere; }
+.ft-row.ft-dir code.ft-name { font-weight: 600; }
+.ft-row.ft-key code.ft-name { font-weight: 700; }
+a.ft-link { text-decoration: none; }
+a.ft-link:hover code.ft-name { color: var(--pst-color-link-hover); text-decoration: underline; }
+.ft-desc { color: var(--pst-color-text-muted); font-size: 0.88rem; }
+.ft-desc { margin-left: 0.35rem; }
+.ft-row.ft-minor code.ft-name, .ft-row.ft-minor .ft-desc { opacity: 0.55; }
+.ft-desc code { font-size: 0.82rem; }
+a.ft-doc { white-space: nowrap; }
+a.ft-doc::after { content: " →"; }
+/* {tree} 링크로 온 줄을 잠깐 강조 */
+@keyframes ft-hit { from { background: rgba(212, 167, 44, 0.32); } to { background: transparent; } }
+.ft-hit > .ft-row, .ft-hit > details > summary > .ft-row { animation: ft-hit 2s ease-out; border-radius: 0.3rem; }
+/* 본문의 {tree}`경로` 링크: 코드 이름 그대로 보이고, 누르면 홈 트리의 그 줄이 열린다 */
+a.ft-jump { text-decoration: none; }
+a.ft-jump code { color: var(--pst-color-link); }
+a.ft-jump:hover code { text-decoration: underline; }
+@media (max-width: 720px) {
+  .ftree-box { padding: 0.7rem 0.6rem 0.8rem; }
+  .ftree ul { margin-left: 0.3rem; }
+  .ftree li { padding-left: 0.95rem; }
+  .ftree ul > li::before { width: 0.7rem; }
+  .ft-desc { flex-basis: 100%; padding-left: 2.2rem; line-height: 1.35rem; padding-bottom: 0.25rem; }
+  .ft-desc::before { content: none; }
+}
+
+/* 홈 '어떻게 동작하나' 단계 아래 줄: 담당 코드 · 설명 문서 */
+.step-refs { font-size: 0.88rem; color: var(--pst-color-text-muted); }
+
+/* 진행 로그 타임라인 (update/log.md): 점과 선 위에 날짜 · 제목 · 한 줄 */
+.tl { display: flex; position: relative; margin: 1.5rem 0 2rem; padding-top: 1.1rem; }
+.tl::before { content: ""; position: absolute; left: 0.5rem; right: 0.5rem; top: 0.45rem; border-top: 2px solid var(--pst-color-border); }
+.tl-item { flex: 1 1 0; position: relative; display: flex; flex-direction: column; gap: 0.15rem; padding: 0.6rem 0.4rem 0;
+  text-decoration: none !important; color: var(--pst-color-text-base) !important; min-width: 0; }
+.tl-item::before { content: ""; position: absolute; top: -0.95rem; left: 0.45rem; width: 0.8rem; height: 0.8rem; border-radius: 50%;
+  background: var(--pst-color-background); border: 2px solid var(--pst-color-text-muted); }
+.tl-item.tl-hl::before { background: #2da44e; border-color: #2da44e; }
+.tl-item:hover .tl-title { text-decoration: underline; }
+.tl-date { font-size: 0.8rem; color: var(--pst-color-text-muted); }
+.tl-title { font-weight: 700; font-size: 0.95rem; }
+.tl-key { font-size: 0.82rem; color: var(--pst-color-text-muted); }
+@media (max-width: 720px) {
+  .tl { flex-direction: column; padding-top: 0; padding-left: 1.2rem; }
+  .tl::before { left: 0.45rem; right: auto; top: 0.3rem; bottom: 0.3rem; border-top: 0; border-left: 2px solid var(--pst-color-border); }
+  .tl-item { padding: 0 0 0.9rem 0.6rem; }
+  .tl-item::before { top: 0.15rem; left: -1.15rem; }
+}
+
+
+/* ---------------------------------------------------------------- DexBench 식 부품 (홈 · 진행 상황) */
+/* 카드: 흰 판, 옅은 테두리, 둥근 모서리 */
+.sd-card { border-radius: 0.8rem; border-color: var(--pst-color-border); background: var(--pst-color-surface); }
+/* 표: 순위표처럼 가볍게 (머리줄 작은 회색 글자, 옅은 가로줄만) */
+.bd-content table.table { border-collapse: collapse; }
+.bd-content table.table thead th { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; color: var(--pst-color-text-muted);
+  border-bottom: 1px solid var(--pst-color-border); background: none; }
+.bd-content table.table td { border-top: 1px solid var(--pst-color-border); }
+
+/* 구역 머리: 작은 라벨 + 한 문장 제목 + 회색 한 줄. 구역 사이에는 가는 가로줄 */
+.dx-head { margin: 3rem 0 1.1rem; padding-top: 2.2rem; border-top: 1px solid var(--pst-color-border); }
+.dx-eyebrow { margin: 0 0 0.3rem; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; color: var(--pst-color-primary); }
+.bd-content .dx-head h2 { margin: 0 0 0.35rem; font-size: 1.7rem; font-weight: 700; }
+.dx-sub { margin: 0; color: var(--pst-color-text-muted); max-width: 40rem; }
+.dx-more { margin: 0.6rem 0 0; text-align: right; font-size: 0.92rem; }
+.dx-more a { text-decoration: none; }
+
+/* 맨 위: 영상 위에 제목 · 한 줄 소개 · 버튼 */
+.dx-hero { position: relative; margin: 0.4rem 0 1.4rem; border-radius: 1rem; overflow: hidden; background: #111; }
+.dx-hero .doc-video-box { margin: 0; }
+.dx-hero video { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 0 !important; }
+.dx-hero::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.55) 100%); }
+.dx-hero-text { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 0.6rem; padding: 1rem; text-align: center; color: #fff; pointer-events: none; }
+.dx-hero-text a { pointer-events: auto; } /* the video's own controls stay usable */
+.dx-hero-title { margin: 0; font-size: clamp(1.8rem, 5vw, 3.4rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+.dx-hero-tag { margin: 0; font-size: clamp(1rem, 2.2vw, 1.3rem); }
+.dx-mono { margin: 0; font-family: var(--pst-font-family-monospace); font-size: 0.76rem; letter-spacing: 0.12em; opacity: 0.85; }
+.dx-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem; margin-top: 0.5rem; }
+/* 홈에서는 영상 위 제목이 페이지 제목 역할 (h1 은 화면 읽기 프로그램용으로 남김) */
+section#ppddvla-nlp-lab > h1 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* 버튼 */
+a.dx-btn, a.dx-btn-ghost { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.55rem 1.1rem; border-radius: 0.45rem;
+  font-weight: 600; font-size: 0.95rem; text-decoration: none !important; line-height: 1.3; }
+a.dx-btn { background: var(--pst-color-primary); color: #fff !important; border: 1px solid var(--pst-color-primary); }
+a.dx-btn:hover { filter: brightness(1.08); }
+a.dx-btn-ghost { border: 1px solid var(--pst-color-border); color: var(--pst-color-text-base) !important; background: var(--pst-color-surface); }
+.dx-hero a.dx-btn-ghost { border-color: rgba(255, 255, 255, 0.7); color: #fff !important; background: rgba(0, 0, 0, 0.25); }
+
+/* 숫자 요약 줄 */
+.dx-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem 1.5rem; padding: 1.1rem 0;
+  border-top: 1px solid var(--pst-color-border); border-bottom: 1px solid var(--pst-color-border); margin: 0 0 1.4rem; }
+.dx-stat-k { margin: 0 0 0.25rem; font-size: 1.35rem; font-weight: 600; letter-spacing: -0.01em; }
+.dx-stat-v { margin: 0; font-size: 0.85rem; line-height: 1.45; color: var(--pst-color-text-muted); }
+
+/* 업데이트 카드: 날짜와 한 줄 */
+.dx-updates { padding: 1rem 1.25rem 0.6rem; border: 1px solid var(--pst-color-border); border-radius: 0.8rem;
+  background: var(--pst-color-surface); margin: 0 0 1rem; }
+.dx-updates-title { margin: 0 0 0.6rem; padding-bottom: 0.6rem; font-size: 1.1rem; font-weight: 600; border-bottom: 1px solid var(--pst-color-border); }
+.dx-upd { display: grid; grid-template-columns: 7.2rem 1fr; gap: 0.8rem; padding: 0.45rem 0; font-size: 0.93rem; }
+.dx-upd + .dx-upd { border-top: 1px dashed var(--pst-color-border); }
+.dx-date { font-family: var(--pst-font-family-monospace); font-size: 0.8rem; color: var(--pst-color-primary); white-space: nowrap; padding-top: 0.1rem; }
+.dx-date::before { content: ""; display: inline-block; width: 0.45rem; height: 0.45rem; margin-right: 0.45rem; border-radius: 50%;
+  background: #2da44e; vertical-align: 0.1rem; }
+
+/* 01 · 02 · 03 카드 */
+.dx-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 0 0 0.5rem; }
+.dx-card { padding: 1.2rem 1.25rem; border: 1px solid var(--pst-color-border); border-radius: 0.8rem; background: var(--pst-color-surface); }
+.dx-card.dx-first { border-color: var(--pst-color-primary); background: color-mix(in srgb, var(--pst-color-primary) 6%, var(--pst-color-surface)); }
+.dx-num { margin: 0 0 0.4rem; font-size: 2.4rem; font-weight: 500; line-height: 1; color: var(--pst-color-primary); }
+.dx-card-title { margin: 0 0 0.4rem; font-size: 1.05rem; font-weight: 700; }
+.dx-card-text { margin: 0; font-size: 0.9rem; line-height: 1.55; color: var(--pst-color-text-muted); }
+.dx-card a { text-decoration: none; }
+
+/* 끝의 행동 유도 띠 */
+.dx-cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin: 3rem 0 1rem;
+  padding-top: 2.2rem; border-top: 1px solid var(--pst-color-border); }
+.dx-cta-title { margin: 0 0 0.25rem; font-size: 1.5rem; font-weight: 700; }
+.dx-cta .dx-actions { justify-content: flex-end; margin: 0; }
+
+@media (max-width: 720px) {
+  .dx-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dx-cards { grid-template-columns: 1fr; }
+  .dx-upd { grid-template-columns: 1fr; gap: 0.15rem; }
+  .dx-hero video { aspect-ratio: 4 / 3; }
+  .dx-hero-text { gap: 0.4rem; }
+  .dx-mono { display: none; }
+  .dx-cta .dx-actions { justify-content: flex-start; }
+}
+
+/* 상단 메뉴 오른쪽 버튼 (DexBench 의 Get started 자리) */
+a.dx-nav-cta { display: inline-flex; align-items: center; padding: 0.42rem 0.95rem; margin-right: 0.4rem; border-radius: 0.45rem;
+  background: var(--pst-color-primary); color: #fff !important; font-weight: 600; font-size: 0.92rem; text-decoration: none !important;
+  white-space: nowrap; }
+a.dx-nav-cta:hover, a.dx-nav-cta.dx-on { filter: brightness(1.08); }
+/* 휴대폰: 위 막대에 로고 글자와 진행 상황 버튼이 함께 들어가도록 줄인다 */
+.navbar-persistent--mobile { margin-left: auto; padding-left: 0.6rem; }
+@media (max-width: 480px) {
+  .bd-header .navbar-brand .logo__title { font-size: 1rem; }
+  .navbar-persistent--mobile a.dx-nav-cta { padding: 0.34rem 0.7rem; margin-right: 0; font-size: 0.85rem; }
+}
+@media (max-width: 360px) {  /* 아주 좁은 화면: 로고 그림만 남긴다 */
+  .bd-header .navbar-brand .logo__title { display: none; }
+}
+/* 상단 메뉴: 지금 페이지의 구역에 밑줄 */
+.bd-header .navbar-nav .nav-item.current > .nav-link { color: var(--pst-color-primary); }
+
+/* 과정: 네 단계 흐름 (상태 배지 포함) */
+.dx-flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.9rem; margin: 0.6rem 0 1.4rem; counter-reset: step; }
+a.dx-step { position: relative; display: flex; flex-direction: column; gap: 0.35rem; padding: 1rem 1.05rem 1.05rem;
+  border: 1px solid var(--pst-color-border); border-radius: 0.8rem; background: var(--pst-color-surface);
+  color: var(--pst-color-text-base) !important; text-decoration: none !important; }
+a.dx-step:hover { border-color: var(--pst-color-primary); }
+a.dx-step.dx-now { border-color: var(--pst-color-primary); background: color-mix(in srgb, var(--pst-color-primary) 6%, var(--pst-color-surface)); }
+a.dx-step:not(:last-child)::after { content: "→"; position: absolute; right: -0.85rem; top: 50%; transform: translateY(-50%);
+  color: var(--pst-color-text-muted); font-size: 0.95rem; z-index: 1; }
+.dx-step-n { font-size: 1.9rem; font-weight: 500; line-height: 1; color: var(--pst-color-primary); }
+.dx-step-t { font-size: 1.05rem; font-weight: 700; }
+.dx-step-d { font-size: 0.85rem; line-height: 1.45; color: var(--pst-color-text-muted); }
+.dx-badge { align-self: flex-start; padding: 0.1rem 0.5rem; border-radius: 999px; font-size: 0.74rem; font-weight: 600; }
+.dx-done { color: #1a7f37; background: rgba(45, 164, 78, 0.14); }
+.dx-run { color: #9a6700; background: rgba(212, 167, 44, 0.2); }
+.dx-plan { color: var(--pst-color-text-muted); background: rgba(128, 128, 128, 0.14); }
+html[data-theme="dark"] .dx-done { color: #56d364; }
+html[data-theme="dark"] .dx-run { color: #e3b341; }
+@media (max-width: 720px) {
+  .dx-flow { grid-template-columns: 1fr; }
+  a.dx-step:not(:last-child)::after { content: "↓"; right: auto; left: 50%; top: auto; bottom: -1rem; transform: translateX(-50%); }
+}
+
+/* 긴 파일 이름·경로(인라인 코드)는 좁은 화면에서 줄을 바꾼다 */
+.bd-content code.literal, .bd-content td code { overflow-wrap: anywhere; }
+/* 머리줄이 비어 있는 "항목 | 내용" 표는 머리줄을 숨긴다 (두 칸이 모두 빈 경우) */
+.bd-content table thead:has(th:first-child > p:empty:only-child):has(th:last-child > p:empty:only-child) { display: none; }
+/* 휴대폰 메뉴(서랍)에서도 지금 구역을 표시 */
+.bd-sidebar-primary .navbar-nav .nav-item.current > .nav-link { color: var(--pst-color-primary); font-weight: 600; }
+/* 휴대폰: 옆으로 밀어 보는 그림에 안내 한 줄 */
+@media (max-width: 720px) {
+  .bd-content figure:has(> img.diagram)::after { content: "옆으로 밀어 보기 →"; display: block; position: sticky; left: 0;
+    padding-top: 0.3rem; font-size: 0.78rem; color: var(--pst-color-text-muted); text-align: right; }
+}
